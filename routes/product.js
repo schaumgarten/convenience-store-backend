@@ -23,6 +23,16 @@ router.get('/', (req, res) => {
     })
 });
 
+router.patch('/:id',(req, res) =>{
+  Product.findByIdAndUpdate(req.params.id,req.body,{new:true})
+      .then(() => {
+          res.status(200).json({msg: "Product succesfully modified"});
+      })
+      .catch(err => {
+          console.log(err);
+      })
+});
+
 router.delete('/:id', (req, res) => {
   Product.findByIdAndRemove(req.params.id)
     .then(() => {
