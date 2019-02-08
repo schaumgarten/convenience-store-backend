@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 router.post('/register', (req, res) => {
-
+  console.log(req.body)
   if (req.body.password !== req.body.confirmPassword) return res.status(500).json({ msg: "The passwords don't match" });
   const salt = bcrypt.genSaltSync(256);
   const hashedPassword = bcrypt.hashSync(req.body.password, salt);
@@ -36,9 +36,9 @@ router.post('/login', async (req, res) => {
   res.status(200).json({user, token});
 });
 
-/*router.get('/', (req, res) => {
-  User.find()
-    .then(user => {
+router.get('/', (req, res) => {
+  User.find({"role": 'store'})
+    .then(users => {
       res.status(200).json({ users })
     })
     .catch(err => {
@@ -47,7 +47,7 @@ router.post('/login', async (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-  User.findById(req.params.id)
+  User.findById(req.params.id, '_id name')
     .then(user => {
       res.status(200).json({ user })
     })
@@ -56,7 +56,7 @@ router.get('/:id', (req, res) => {
     })
 });
 
-router.patch('/:id', (req, res) => {
+/*router.patch('/:id', (req, res) => {
   User.findByIdAndUpdate(req.params.id, req.body, { new: true })
     .then(() => {
       res.status(200).json({ msg: "User modified successfully" });
